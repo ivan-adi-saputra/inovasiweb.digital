@@ -90,6 +90,8 @@ const changeIsRecomended = async (req) => {
   return result;
 };
 
+const checkingService = checkServiceExistence;
+
 module.exports = {
   getAllService,
   getServiceById,
@@ -97,4 +99,5 @@ module.exports = {
   updateService,
   deleteService,
   changeIsRecomended,
+  checkingService,
 };
