@@ -1,6 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const { handleResponse } = require("../../../helper/handle-response");
-const { signinUser, signupUser } = require("../../../services/mongoose/auth");
+const {
+  signinUser,
+  signupUser,
+} = require("../../../services/mongoose/authUser");
 
 const signin = async (req, res, next) => {
   try {
