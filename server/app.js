@@ -6,10 +6,11 @@ const app = express();
 // router
 const v1 = "/api/v1";
 const cms = `${v1}/cms`;
-const userRouter = require(`./app${v1}/user/router`);
 const serviceRouter = require(`./app${v1}/service/router`);
 const imageRouter = require(`./app${v1}/image/router`);
 const projectRouter = require(`./app${v1}/project/router`);
+const meetingRouter = require(`./app${v1}/meeting/router`);
+const userRouter = require(`./app${v1}/auth/router`);
 
 // middlewares
 const notFoundMiddleware = require("./app/middlewares/not-found");
@@ -22,10 +23,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // router
-app.use(cms, userRouter);
 app.use(cms, serviceRouter);
 app.use(cms, imageRouter);
 app.use(cms, projectRouter);
+app.use(cms, meetingRouter);
+app.use(cms, userRouter);
 
 // middlewares
 app.use(notFoundMiddleware);
