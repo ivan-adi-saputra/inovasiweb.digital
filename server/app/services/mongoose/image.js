@@ -10,7 +10,7 @@ const uploadImage = async (req) => {
 };
 
 const checkingImage = async (id) => {
-  const result = await Image.findOne({ id });
+  const result = await Image.findById(id);
   if (!result)
     throw new NotFoundError(`Image tidak ditemukan dengan id: ${id}`);
 

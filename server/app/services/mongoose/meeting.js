@@ -1,9 +1,13 @@
 const Meeting = require("../../api/v1/meeting/model");
 const { NotFoundError } = require("../../errors");
+const { checkingClient } = require("./client");
 
 // Helper untuk pengecekan ID
 const checkMeetingExistence = async (id) => {
-  const meeting = await Meeting.findById(id);
+  const meeting = await Meeting.findById(id).populate({
+    path: "client",
+    select: "_id name email phone",
+  });
   if (!meeting)
     throw new NotFoundError(`Meeting tidak ditemukan dengan id: ${id}`);
   return meeting;
@@ -18,7 +22,10 @@ const getAllMeeting = async (req) => {
     condition = { title: { $regex: new RegExp(title, "i") } };
   }
 
-  return await Meeting.find(condition);
+  return await Meeting.find(condition).populate({
+    path: "client",
+    select: "_id name email phone",
+  });
 };
 
 // Mengambil data meeting berdasarkan ID
@@ -30,6 +37,8 @@ const getMeetingById = async (req) => {
 // Membuat meeting baru
 const createMeeting = async (req) => {
   const { client, email, phone, datetime, title, description } = req.body;
+
+  if (client) checkingClient(client);
 
   return await Meeting.create({
     client,
@@ -45,6 +54,8 @@ const createMeeting = async (req) => {
 const updateMeeting = async (req) => {
   const { client, email, phone, datetime, title, description } = req.body;
   const { id } = req.params;
+
+  if (client) checkingClient(client);
 
   const updatedMeeting = await Meeting.findByIdAndUpdate(
     id,

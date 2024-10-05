@@ -1,5 +1,6 @@
 const Project = require("../../api/v1/project/model");
 const { BadRequestError, NotFoundError } = require("../../errors");
+const { checkingClient } = require("./client");
 const { checkingImage } = require("./image");
 const { checkingService } = require("./service");
 
@@ -13,6 +14,10 @@ const checkProjectExistence = async (id) => {
     .populate({
       path: "image",
       select: "_id name",
+    })
+    .populate({
+      path: "client",
+      select: "_id name email phone",
     });
   if (!service)
     throw new NotFoundError(`Project tidak ditemukan dengan id: ${id}`);
@@ -35,12 +40,12 @@ const getAllProject = async (req) => {
     };
   }
 
-  // if(client) {
-  //   condition = {
-  //    ...condition,
-  //     client
-  //   };
-  // }
+  if (client) {
+    condition = {
+      ...condition,
+      client,
+    };
+  }
 
   return await Project.find(condition)
     .populate({
@@ -50,6 +55,10 @@ const getAllProject = async (req) => {
     .populate({
       path: "image",
       select: "_id name",
+    })
+    .populate({
+      path: "client",
+      select: "_id name email phone",
     });
 };
 
@@ -65,7 +74,7 @@ const createProject = async (req) => {
     req.body;
 
   checkingService(service);
-  // if(client) // checkclient
+  if (client) checkingClient(client);
   checkingImage(image);
 
   if (await Project.exists({ name }))
@@ -92,7 +101,7 @@ const updateProject = async (req) => {
     throw new BadRequestError("Nama project sudah ada");
 
   checkingService(service);
-  // if(client) // checkclient
+  if (client) checkingClient(client);
   checkingImage(image);
 
   const updatedProject = await Project.findByIdAndUpdate(
