@@ -19,11 +19,16 @@ const clientAuthRouter = require(`./app${v1}/authClient/router`);
 const notFoundMiddleware = require("./app/middlewares/not-found");
 const handleErrorMiddleware = require("./app/middlewares/handle-error");
 
+// cors
+const cors = require("cors");
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(cors());
 
 // router
 app.use(cms, serviceRouter);

@@ -1,14 +1,19 @@
 "use client";
+import React from "react";
 import PricingCard from "@/components/card/PricingCard";
 import { NextPage } from "next";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import Client from "../Client";
+import { useGetAllServiceQuery } from "@/services/service";
+import SkeletonService from "../../skeleton/SkeletonService";
 
 interface Props {}
 
 const Pricing: NextPage<Props> = ({}) => {
+  const { isLoading, data } = useGetAllServiceQuery();
+
   return (
     <section
       className="relative mt-24 md:pt-16 overflow-hidden bg-white"
@@ -41,39 +46,38 @@ const Pricing: NextPage<Props> = ({}) => {
           <div className="lg:w-7/12 w-full  mt-20 md:mt-0">
             <div className="overflow-hidden">
               <div className="flex transition-transform duration-300 ease-in-out">
-                <Swiper
-                  modules={[Navigation, Pagination]}
-                  slidesPerView={2}
-                  spaceBetween={0}
-                  navigation
-                  pagination={{ clickable: true }}
-                  breakpoints={{
-                    200: {
-                      slidesPerView: 1,
-                    },
-                    1024: {
-                      slidesPerView: 2,
-                    },
-                  }}
-                >
-                  {[1, 2, 3, 4, 5].map((card, index) => (
-                    <SwiperSlide key={index}>
-                      <PricingCard
-                        name="Web Development"
-                        price={1500000}
-                        benefits={[
-                          "Konsultasi 1",
-                          "Konsultasi 2",
-                          "Konsultasi 3",
-                          "Konsultasi 4",
-                          "Konsultasi 5",
-                          "Konsultasi 6",
-                        ]}
-                        isRecommended
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                {isLoading ? (
+                  [1, 2].map((item) => <SkeletonService key={item} />)
+                ) : (
+                  <Swiper
+                    modules={[Navigation, Pagination]}
+                    slidesPerView={data?.data?.length === 1 ? 1 : 2}
+                    spaceBetween={0}
+                    navigation={data?.data && data?.data?.length > 1}
+                    pagination={{
+                      clickable: data?.data && data?.data?.length > 1,
+                    }}
+                    breakpoints={{
+                      200: {
+                        slidesPerView: 1,
+                      },
+                      1024: {
+                        slidesPerView: data?.data?.length === 1 ? 1 : 2,
+                      },
+                    }}
+                  >
+                    {data?.data?.map((data, index) => (
+                      <SwiperSlide key={index}>
+                        <PricingCard
+                          name={data.name}
+                          price={data.price}
+                          benefits={data.benefits}
+                          isRecommended={data.isRecomended}
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                )}
               </div>
             </div>
           </div>

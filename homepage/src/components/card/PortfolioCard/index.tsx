@@ -1,15 +1,19 @@
 "use client";
+import { config } from "@/config";
 import { NextPage } from "next";
 import Image, { StaticImageData } from "next/image";
 import { useCallback, useRef, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 
 interface Props {
-  url: string | StaticImageData;
+  url?: string;
   name: string;
 }
 
-const PortfolioCard: NextPage<Props> = ({ url, name }) => {
+const PortfolioCard: NextPage<Props> = ({
+  url = "uploads/images/default-project.png",
+  name,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -42,11 +46,13 @@ const PortfolioCard: NextPage<Props> = ({ url, name }) => {
     [isOpen, scale]
   );
 
+  const urlPatch = `${config.base_url}/${url}`;
+
   return (
     <div>
       <div onClick={toggleZoom} className="cursor-pointer">
         <Image
-          src={url}
+          src={urlPatch}
           alt={name}
           className="mb-4 rounded-lg overflow-hidden w-full"
           width={300}
@@ -73,7 +79,7 @@ const PortfolioCard: NextPage<Props> = ({ url, name }) => {
             onMouseMove={handleMouseMove}
           >
             <Image
-              src={url}
+              src={urlPatch}
               alt={name}
               fill
               style={{
