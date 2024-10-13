@@ -51,7 +51,7 @@ const signupClient = async (req) => {
 
   let result = await Client.findOne({ email, isActive: false });
 
-  const otp = Math.floor(Math.random() * 9999);
+  const otp = Math.floor(1000 + Math.random() * 9000);
 
   if (result) {
     Object.assign(result, {
