@@ -11,12 +11,10 @@ const ClientSchema = Schema(
     },
     email: {
       type: String,
-      required: [true, "Email client harus diisi"],
       unique: true,
     },
     password: {
       type: String,
-      required: [true, "Password client harus diisi"],
       minlength: [5, "Password client minimal 5 karakter"],
     },
     phone: String,

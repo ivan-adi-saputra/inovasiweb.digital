@@ -11,6 +11,7 @@ const imageRouter = require(`./app${v1}/image/router`);
 const projectRouter = require(`./app${v1}/project/router`);
 const meetingRouter = require(`./app${v1}/meeting/router`);
 const clientRouter = require(`./app${v1}/client/router`);
+const companyRouter = require(`./app${v1}/company/router`);
 // authenticate
 const userAuthRouter = require(`./app${v1}/authUser/router`);
 const clientAuthRouter = require(`./app${v1}/authClient/router`);
@@ -36,6 +37,7 @@ app.use(cms, imageRouter);
 app.use(cms, projectRouter);
 app.use(cms, meetingRouter);
 app.use(cms, clientRouter);
+app.use(cms, companyRouter);
 // authentication
 app.use(cms, userAuthRouter);
 app.use(cms, clientAuthRouter);

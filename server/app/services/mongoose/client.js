@@ -1,5 +1,6 @@
 const Client = require("../../api/v1/client/model");
 const { BadRequestError, NotFoundError } = require("../../errors");
+const { checkingImage } = require("./image");
 
 // Helper untuk pengecekan ID
 const checkClientExistence = async (id) => {
@@ -37,17 +38,23 @@ const getClientById = async (req) => {
 const createClient = async (req) => {
   const { name, email, password, phone, company, image } = req.body;
 
-  if (await Client.exists({ email }))
+  if (email && (await Client.exists({ email })))
     throw new BadRequestError("Email client sudah ada");
 
-  return await Client.create({
+  if (image) await checkingImage(image);
+
+  const clientData = {
     name,
-    email,
-    password,
-    phone,
-    company,
-    image,
-  });
+    email: email || null,
+    password: password || null,
+    phone: phone || null,
+    company: company || null,
+  };
+  if (image) {
+    clientData.image = image;
+  }
+
+  return await Client.create(clientData);
 };
 
 // Mengupdate client berdasarkan ID
