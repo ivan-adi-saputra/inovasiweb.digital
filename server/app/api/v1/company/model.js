@@ -9,6 +9,7 @@ const companySchema = Schema(
     },
     image: {
       type: mongoose.Types.ObjectId,
+      ref: "Image",
       required: true,
     },
     description: String,

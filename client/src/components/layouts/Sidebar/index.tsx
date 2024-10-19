@@ -66,8 +66,8 @@ export default function Sidebar() {
               Icon={<MdOutlineDashboard />}
             />
             <Navlink
-              name="Client"
-              url="/dashboard/client"
+              name="Company"
+              url="/dashboard/company"
               Icon={<FaChalkboardUser />}
             />
             <Navlink

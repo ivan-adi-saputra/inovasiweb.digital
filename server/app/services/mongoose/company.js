@@ -4,7 +4,10 @@ const { checkingImage } = require("./image");
 
 // menambil semua company
 const getAllCompany = async (req) => {
-  return await Company.find();
+  return await Company.find().populate({
+    path: "image",
+    select: "_id name",
+  });
 };
 
 // mengambil berdasarkan id
@@ -56,7 +59,10 @@ const updateCompany = async (req) => {
 // delete company
 const deleteCompany = async (req) => {
   const { id } = req.params;
-  const company = await Company.findByIdAndDelete(id);
+  const company = await Company.findByIdAndDelete(id).populate({
+    path: "image",
+    select: "_id name",
+  });
   if (!company)
     throw new NotFoundError(`Perusahaan tidak ditemukan dengan id: ${id}`);
   return company;
