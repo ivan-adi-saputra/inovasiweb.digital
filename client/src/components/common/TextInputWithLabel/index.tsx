@@ -29,7 +29,7 @@ const TextInputWithLabel: NextPage<Props> = ({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input placeholder={placeholder} {...field} />
+            <Input placeholder={placeholder} {...field} value={field.value} />
           </FormControl>
           <FormMessage />
         </FormItem>

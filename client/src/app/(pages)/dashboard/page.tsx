@@ -12,8 +12,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import HeroTitle from "@/components/common/HeroTitle";
+import { useGetAllCompanyQuery } from "@/services/company";
 
 export default function DashboardPage() {
+  const { data: dataCompany, isLoading: isLoadingCompany } =
+    useGetAllCompanyQuery();
+
   const invoices = [
     {
       invoice: "INV001",
@@ -74,7 +78,13 @@ export default function DashboardPage() {
               Total clients
             </p>
             <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-              6389
+              {isLoadingCompany ? (
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-16 animate-pulse"></div>
+              ) : (
+                <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  {dataCompany?.data?.length || 0}
+                </p>
+              )}
             </p>
           </div>
         </div>

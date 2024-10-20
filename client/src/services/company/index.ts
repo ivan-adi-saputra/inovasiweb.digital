@@ -24,6 +24,7 @@ export const companyApi = createApi({
       query: (id) => ({
         url: `/${id}`,
       }),
+      providesTags: ["company"],
     }),
     createCompany: builder.mutation<companyResponse, companyForm>({
       query: (body) => ({

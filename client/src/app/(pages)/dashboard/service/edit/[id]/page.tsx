@@ -1,59 +1,60 @@
 "use client";
 import HeroTitle from "@/components/common/HeroTitle";
 import { NextPage } from "next";
-import FormCompany from "../../form";
-import { z } from "zod";
-import { companySchema } from "@/lib/formSchema";
 import {
-  useGetOneCompanyQuery,
-  useUpdateCompanyMutation,
-} from "@/services/company";
+  useGetOneServiceQuery,
+  useUpdateServiceMutation,
+} from "@/services/service";
 import { useToast } from "@/hooks/use-toast";
+import { z } from "zod";
+import { serviceSchema } from "@/lib/formSchema";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import FormService from "../../form";
 
 interface Props {}
 
-type companyForm = z.infer<typeof companySchema>;
+type serviceForm = z.infer<typeof serviceSchema>;
 
-const UpdatePage: NextPage<Props> = ({}) => {
-  const params = useParams();
-
-  const { data: defaultValues } = useGetOneCompanyQuery(params.id.toString());
-  const [mutationCompany, { isLoading }] = useUpdateCompanyMutation();
-
+const EditPage: NextPage<Props> = ({}) => {
   const { toast } = useToast();
   const router = useRouter();
+  const params = useParams();
 
-  const onSubmit = async (val: companyForm) => {
+  const [mutationService, { isLoading }] = useUpdateServiceMutation();
+  const { data: defaultValues } = useGetOneServiceQuery(params.id.toString());
+
+  const onSubmit = async (val: serviceForm) => {
     try {
       const data = {
         ...val,
         description: val.description || "",
       };
-      await mutationCompany({ id: params.id.toString(), body: data }).unwrap();
+      await mutationService({ body: data, id: params.id.toString() });
 
       toast({
         title: "Successfully",
-        description: "Update Company Successfully",
+        description: "Update Service Successfully",
       });
-      router.push("/dashboard/company");
+      router.push("/dashboard/service");
     } catch (err: any) {
       toast({
         variant: "destructive",
-        title: "Update Company Failed",
+        title: "Update Service Failed",
         description: err?.data?.msg || "Internal Server Error",
       });
     }
   };
+
   return (
     <div className="container px-6 mx-auto grid">
       <HeroTitle
-        name="Update Company"
+        name="Update Service"
         subtitle="Partner Sukses dalam Digitalisasi Bisnis"
       />
-      <FormCompany
-        isLoading={isLoading}
+      <FormService
         onSubmit={onSubmit}
+        isLoading={isLoading}
         isEdit
         defaultValues={defaultValues?.data}
       />
@@ -61,4 +62,4 @@ const UpdatePage: NextPage<Props> = ({}) => {
   );
 };
 
-export default UpdatePage;
+export default EditPage;
