@@ -19,7 +19,7 @@ const checkProjectExistence = async (id) => {
       path: "client",
       select: "_id name email phone",
     });
-  if (!service)
+  if (!project)
     throw new NotFoundError(`Project tidak ditemukan dengan id: ${id}`);
   return project;
 };
@@ -55,11 +55,11 @@ const getAllProject = async (req) => {
     .populate({
       path: "image",
       select: "_id name",
-    })
-    .populate({
-      path: "client",
-      select: "_id name email phone",
     });
+  // .populate({
+  //   path: "client",
+  //   select: "_id name email phone",
+  // });
 };
 
 // Mengambil data project berdasarkan ID
@@ -75,7 +75,10 @@ const createProject = async (req) => {
 
   checkingService(service);
   if (client) checkingClient(client);
-  checkingImage(image);
+
+  console.log(req.body);
+
+  if (image) checkingImage(image);
 
   if (await Project.exists({ name }))
     throw new BadRequestError("Nama project sudah ada");
@@ -85,7 +88,7 @@ const createProject = async (req) => {
     client,
     date,
     name,
-    image,
+    ...(image ? { image } : {}),
     features,
     description,
   });
@@ -102,11 +105,20 @@ const updateProject = async (req) => {
 
   checkingService(service);
   if (client) checkingClient(client);
-  checkingImage(image);
+
+  if (image) checkingImage(image);
 
   const updatedProject = await Project.findByIdAndUpdate(
     id,
-    { service, client, date, name, image, features, description },
+    {
+      service,
+      client,
+      date,
+      name,
+      ...(image ? { image } : {}),
+      features,
+      description,
+    },
     { new: true }
   );
   if (!updatedProject)

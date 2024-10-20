@@ -19,7 +19,7 @@ const ArrayInput: React.FC<ArrayInputProps> = ({ label, name, form }) => {
 
   const handleAddItem = () => {
     if (inputValue.trim() === "") {
-      setError("Benefits tidak boleh kosong");
+      setError(`${label} tidak boleh kosong`);
       return;
     }
 
@@ -47,7 +47,7 @@ const ArrayInput: React.FC<ArrayInputProps> = ({ label, name, form }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           className="border border-gray-300 rounded-lg p-2 w-full focus:ring focus:ring-purple-300 focus:outline-none"
-          placeholder="Enter a benefit"
+          placeholder={`Enter a ${name}`}
         />
         <button
           type="button"

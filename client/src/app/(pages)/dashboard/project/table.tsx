@@ -10,21 +10,19 @@ import {
 } from "@/components/ui/table";
 import SkeletonTable from "@/components/skeleton/SkeletonTable";
 import ButtonActionTable from "@/components/common/ButtonActionTable";
-import { formatPrice } from "@/lib/utils";
-import { serviceForm } from "@/types/service";
-import { FaRegCheckCircle } from "react-icons/fa";
-import { IoMdCloseCircleOutline } from "react-icons/io";
+import { formatDate } from "date-fns";
+import { Project } from "@/types/project";
 
 interface Props {
-  data: serviceForm[];
+  data: Project[];
   isLoading: boolean;
   handleDelete: (id: string) => void;
 }
 
-const serviceColumn: string[] = ["Name", "Benefits", "Price", "Recomended"];
+const projectColumn: string[] = ["Name", "Date", "Service", "Features"];
 
-const TableService: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
-  const serviceRow = (item: any) => (
+const TableProject: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
+  const projectRow = (item: any) => (
     <TableRow key={item._id}>
       <TableCell className="font-medium">
         <div>
@@ -36,22 +34,16 @@ const TableService: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
           )}
         </div>
       </TableCell>
-      <TableCell className="font-medium">{item.benefits}</TableCell>
-      <TableCell className="font-medium">{formatPrice(+item.price)}</TableCell>
-      <TableCell className="font-medium text-center">
-        <div className="flex items-center justify-center">
-          {item.isRecomended ? (
-            <FaRegCheckCircle className="text-green-600" />
-          ) : (
-            <IoMdCloseCircleOutline className="text-red-600" />
-          )}
-        </div>
+      <TableCell className="font-medium">
+        {formatDate(item.date, "dd-MM-yyyy")}
       </TableCell>
+      <TableCell className="font-medium">{item?.service?.name}</TableCell>
+      <TableCell className="font-medium">{item?.features}</TableCell>
       <TableCell>
         <ButtonActionTable
           handleDelete={(id) => handleDelete(id)}
           id={item._id}
-          name="service"
+          name="project"
         />
       </TableCell>
     </TableRow>
@@ -63,7 +55,7 @@ const TableService: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
         <Table>
           <TableHeader>
             <TableRow className="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-80">
-              {serviceColumn.map((item, key) => (
+              {projectColumn.map((item, key) => (
                 <TableHead key={key}>{item}</TableHead>
               ))}
               <TableHead className="text-right">Action</TableHead>
@@ -72,19 +64,19 @@ const TableService: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
           <TableBody>
             {isLoading ? (
               // skeleton for loading
-              <SkeletonTable length={serviceColumn.length + 1} />
+              <SkeletonTable length={projectColumn.length + 1} />
             ) : (
               <>
                 {data?.length > 0 ? (
-                  data.map(serviceRow)
+                  data.map(projectRow)
                 ) : (
                   // table if not found
                   <TableRow>
                     <TableCell
-                      colSpan={serviceColumn.length + 1}
+                      colSpan={projectColumn.length + 1}
                       className="text-center text-gray-400"
                     >
-                      Service Not Found
+                      Project Not Found
                     </TableCell>
                   </TableRow>
                 )}
@@ -97,4 +89,4 @@ const TableService: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
   );
 };
 
-export default TableService;
+export default TableProject;

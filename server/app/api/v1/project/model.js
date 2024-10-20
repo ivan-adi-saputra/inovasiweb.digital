@@ -4,12 +4,12 @@ const { Schema, model } = mongoose;
 const projectSchema = Schema(
   {
     service: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Service",
       required: [true, "Service harus diisi"],
     },
     client: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Client",
     },
     date: {
@@ -22,7 +22,7 @@ const projectSchema = Schema(
       unique: true,
     },
     image: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Image",
     },
     features: [String],

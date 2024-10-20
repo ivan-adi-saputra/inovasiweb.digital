@@ -9,6 +9,7 @@ export interface serviceResponse extends baseResponse {
 }
 
 export interface serviceForm {
+  _id?: string;
   name: string;
   benefits: string[];
   price: number;
