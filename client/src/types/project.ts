@@ -1,11 +1,11 @@
 import { baseResponse } from "./baseResponse";
 
 export interface allProjectResponse extends baseResponse {
-  data: Project[];
+  data: ProjectResponse[];
 }
 
 export interface projectResponse extends baseResponse {
-  data: Project;
+  data: ProjectResponse;
 }
 
 export interface ProjectBase {
@@ -15,7 +15,7 @@ export interface ProjectBase {
   description?: string;
 }
 
-export interface Project extends ProjectBase {
+export interface ProjectResponse extends ProjectBase {
   service: {
     _id: string;
     name: string;

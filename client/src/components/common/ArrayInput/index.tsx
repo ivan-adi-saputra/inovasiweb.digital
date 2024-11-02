@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 
@@ -35,6 +35,13 @@ const ArrayInput: React.FC<ArrayInputProps> = ({ label, name, form }) => {
     setInputArray(newArray);
     form.setValue(name, newArray);
   };
+
+  useEffect(() => {
+    const fieldError = form?.formState?.errors?.[name]?.message;
+    if (fieldError) {
+      setError(fieldError);
+    }
+  }, [form.formState.errors, name]);
 
   return (
     <div className="w-full max-w-md py-4">

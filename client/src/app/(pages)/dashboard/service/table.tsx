@@ -36,7 +36,22 @@ const TableService: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
           )}
         </div>
       </TableCell>
-      <TableCell className="font-medium">{item.benefits}</TableCell>
+      <TableCell className="font-medium">
+        {item.benefits && item.benefits.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {item.benefits.map((benefit: string, index: number) => (
+              <span
+                key={index}
+                className="bg-blue-100 text-blue-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full"
+              >
+                {benefit}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <span className="text-gray-500">No benefits listed</span>
+        )}
+      </TableCell>
       <TableCell className="font-medium">{formatPrice(+item.price)}</TableCell>
       <TableCell className="font-medium text-center">
         <div className="flex items-center justify-center">

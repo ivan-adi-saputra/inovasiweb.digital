@@ -11,10 +11,10 @@ import {
 import SkeletonTable from "@/components/skeleton/SkeletonTable";
 import ButtonActionTable from "@/components/common/ButtonActionTable";
 import { formatDate } from "date-fns";
-import { Project } from "@/types/project";
+import { ProjectResponse } from "@/types/project";
 
 interface Props {
-  data: Project[];
+  data: ProjectResponse[];
   isLoading: boolean;
   handleDelete: (id: string) => void;
 }
@@ -38,7 +38,22 @@ const TableProject: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
         {formatDate(item.date, "dd-MM-yyyy")}
       </TableCell>
       <TableCell className="font-medium">{item?.service?.name}</TableCell>
-      <TableCell className="font-medium">{item?.features}</TableCell>
+      <TableCell className="font-medium">
+        {item.features && item.features.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {item.features.map((feature: string, index: number) => (
+              <span
+                key={index}
+                className="bg-blue-100 text-blue-700 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full"
+              >
+                {feature}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <span className="text-gray-500">No features listed</span>
+        )}
+      </TableCell>
       <TableCell>
         <ButtonActionTable
           handleDelete={(id) => handleDelete(id)}

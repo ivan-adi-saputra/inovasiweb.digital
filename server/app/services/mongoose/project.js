@@ -14,11 +14,11 @@ const checkProjectExistence = async (id) => {
     .populate({
       path: "image",
       select: "_id name",
-    })
-    .populate({
-      path: "client",
-      select: "_id name email phone",
     });
+  // .populate({
+  //   path: "client",
+  //   select: "_id name email phone",
+  // });
   if (!project)
     throw new NotFoundError(`Project tidak ditemukan dengan id: ${id}`);
   return project;

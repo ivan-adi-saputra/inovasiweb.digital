@@ -49,7 +49,7 @@ export default function UploadImage({
       setPreviewImg(`${config.base_url}/${defaultImage}`);
       form.setValue(name, imageId);
     }
-  }, [defaultImage]);
+  }, [form.formState.errors, name]);
 
   return (
     <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">

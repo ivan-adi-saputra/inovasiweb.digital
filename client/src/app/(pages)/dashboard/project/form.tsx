@@ -23,12 +23,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, formatDate } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Select from "react-select";
 import { useGetAllServiceQuery } from "@/services/service";
+import { ProjectResponse } from "@/types/project";
 
 type projectForm = z.infer<typeof projectSchema>;
 
@@ -36,7 +37,7 @@ interface Props {
   onSubmit: (data: projectForm) => void;
   isLoading: boolean;
   isEdit?: boolean;
-  defaultValues?: projectForm;
+  defaultValues?: ProjectResponse;
 }
 
 const FormProject: NextPage<Props> = ({
@@ -47,7 +48,19 @@ const FormProject: NextPage<Props> = ({
 }) => {
   const form = useForm<projectForm>({
     resolver: zodResolver(projectSchema),
-    defaultValues,
+    defaultValues: {
+      name: defaultValues?.name || "",
+      date:
+        defaultValues?.date instanceof Date
+          ? defaultValues.date
+          : defaultValues?.date
+          ? new Date(defaultValues.date)
+          : undefined,
+      description: defaultValues?.description || "",
+      features: defaultValues?.features || [],
+      service: defaultValues?.service?._id?.toString() || "",
+      image: defaultValues?.image?._id || "",
+    },
   });
 
   const { data: dataService } = useGetAllServiceQuery();
@@ -75,6 +88,11 @@ const FormProject: NextPage<Props> = ({
                     isSearchable
                     name="service"
                     options={optionsService}
+                    value={
+                      optionsService?.find(
+                        (option) => option.value === field.value
+                      ) || null
+                    }
                     onChange={(option) => field.onChange(option?.value)}
                   />
                   <FormMessage />
@@ -144,7 +162,11 @@ const FormProject: NextPage<Props> = ({
 
           <div className="w-full md:w-1/2 px-4 py-2">
             <FormLabel className="mb-3">Upload Image</FormLabel>
-            <UploadImage form={form} name="image" />
+            <UploadImage
+              form={form}
+              name="image"
+              defaultImage={defaultValues?.image?.name}
+            />
           </div>
 
           <div className="w-full md:w-1/2 px-4 py-2">

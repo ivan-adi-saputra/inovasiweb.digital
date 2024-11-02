@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import ArrayInput from "@/components/common/ArrayInput";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useEffect } from "react";
 
 type serviceForm = z.infer<typeof serviceSchema>;
 
@@ -36,8 +37,18 @@ const FormService: NextPage<Props> = ({
 }) => {
   const form = useForm<serviceForm>({
     resolver: zodResolver(serviceSchema),
-    defaultValues,
+    defaultValues: {
+      name: defaultValues?.name,
+      benefits: defaultValues?.benefits,
+      price: defaultValues?.price,
+      isRecomended: defaultValues?.isRecomended,
+      description: defaultValues?.description,
+    },
   });
+
+  useEffect(() => {
+    form.setValue("isRecomended", false);
+  }, [form]);
 
   return (
     <Form {...form}>

@@ -18,16 +18,7 @@ type projectForm = z.infer<typeof projectSchema>;
 const UpdatePage: NextPage<Props> = ({}) => {
   const params = useParams();
 
-  const { data: dataService } = useGetOneProjectQuery(params.id.toString());
-
-  const defaultValues = {
-    ...dataService?.data,
-    image: dataService?.data.image?._id?.toString() || "",
-    service: dataService?.data.service?._id?.toString() || "",
-    date: dataService?.data.date || null,
-    name: dataService?.data?.name || "",
-    features: dataService?.data?.features || [],
-  };
+  const { data: defaultValues } = useGetOneProjectQuery(params.id.toString());
 
   const [mutationProject, { isLoading }] = useUpdateProjectMutation();
 
@@ -66,7 +57,7 @@ const UpdatePage: NextPage<Props> = ({}) => {
         isLoading={isLoading}
         onSubmit={onSubmit}
         isEdit
-        defaultValues={defaultValues}
+        defaultValues={defaultValues?.data}
       />
     </div>
   );
