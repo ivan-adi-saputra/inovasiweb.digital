@@ -58,6 +58,7 @@ const CompanyPage: NextPage<Props> = ({}) => {
         <div className="flex items-center sm:justify-end w-full">
           <Link
             href="/dashboard/company/create"
+            prefetch={true}
             className="text-white bg-green-500 hover:bg-green-700 focus:ring-4 focus:ring-green-200 font-medium inline-flex items-center rounded-lg text-sm px-3 py-2 text-center sm:ml-auto"
           >
             <FaPlus className="mr-2" />

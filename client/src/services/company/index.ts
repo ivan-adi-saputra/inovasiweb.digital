@@ -4,7 +4,6 @@ import {
   companyForm,
   companyResponse,
 } from "@/types/company";
-import { IdCardIcon } from "@radix-ui/react-icons";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const companyApi = createApi({

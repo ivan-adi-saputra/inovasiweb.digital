@@ -70,7 +70,10 @@ const deleteCompany = async (req) => {
 
 // chceking company byId
 const checkingCompany = async (id) => {
-  const result = await Company.findById(id);
+  const result = await Company.findById(id).populate({
+    path: "image",
+    select: "_id name",
+  });
   if (!result)
     throw new NotFoundError(`Perusahaan tidak ditemukan dengan id: ${id}`);
 

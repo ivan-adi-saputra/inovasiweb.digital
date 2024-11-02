@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaTrashAlt } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
@@ -16,14 +17,13 @@ const ButtonActionTable: NextPage<Props> = ({ handleDelete, id, name }) => {
 
   return (
     <div className="flex justify-end space-x-2">
-      <Button
-        onClick={() => router.push(`/dashboard/${name}/edit/${id}`)}
-        size={"icon"}
-        variant={"outline"}
-        className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white"
+      <Link
+        href={`/dashboard/${name}/edit/${id}`}
+        prefetch={true}
+        className="py-2 px-3 border rounded-md border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white"
       >
         <HiPencilAlt />
-      </Button>
+      </Link>
       <Button
         onClick={() => handleDelete(id)}
         size={"icon"}

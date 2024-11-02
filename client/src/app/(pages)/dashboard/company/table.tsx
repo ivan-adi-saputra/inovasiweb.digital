@@ -12,10 +12,10 @@ import SkeletonTable from "@/components/skeleton/SkeletonTable";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { config } from "@/config";
 import ButtonActionTable from "@/components/common/ButtonActionTable";
-import { companyForm } from "@/types/company";
+import { companyResponse } from "@/types/company";
 
 interface Props {
-  data: companyForm[];
+  data: companyResponse[];
   isLoading: boolean;
   handleDelete: (id: string) => void;
 }
@@ -23,7 +23,7 @@ interface Props {
 const companyColumn: string[] = ["Image", "Name"];
 
 const TableCompany: NextPage<Props> = ({ data, isLoading, handleDelete }) => {
-  const companyRow = (item: any) => (
+  const companyRow = (item: companyResponse) => (
     <TableRow key={item._id}>
       <TableCell>
         <Avatar>

@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ButtonForm from "@/components/common/ButtonForm";
 import { Textarea } from "@/components/ui/textarea";
 import UploadImage from "@/components/common/UploadImage";
+import { companyResponse } from "@/types/company";
 
 type companyForm = z.infer<typeof companySchema>;
 
@@ -23,7 +24,7 @@ interface Props {
   onSubmit: (data: companyForm) => void;
   isLoading: boolean;
   isEdit?: boolean;
-  defaultValues?: companyForm;
+  defaultValues?: companyResponse;
 }
 
 const FormCompany: NextPage<Props> = ({
@@ -34,7 +35,11 @@ const FormCompany: NextPage<Props> = ({
 }) => {
   const form = useForm<companyForm>({
     resolver: zodResolver(companySchema),
-    defaultValues,
+    defaultValues: {
+      name: defaultValues?.name || "",
+      image: defaultValues?.image?._id || "",
+      description: defaultValues?.description || "",
+    },
   });
 
   return (
@@ -73,7 +78,16 @@ const FormCompany: NextPage<Props> = ({
 
           <div className="w-full md:w-1/2 px-4 py-2">
             <FormLabel className="mb-3">Upload Image</FormLabel>
-            <UploadImage form={form} name="image" />
+            {form?.formState?.errors?.image?.message && (
+              <p className="text-sm text-red-600">
+                {form?.formState?.errors?.image?.message}
+              </p>
+            )}
+            <UploadImage
+              form={form}
+              name="image"
+              defaultImage={defaultValues?.image?.name}
+            />
           </div>
 
           <div className="w-full text-end px-4 py-2">

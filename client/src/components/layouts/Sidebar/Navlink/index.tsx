@@ -26,6 +26,7 @@ const Navlink: NextPage<Props> = ({ url, Icon, name }) => {
     <li>
       <Link
         href={url}
+        prefetch={true}
         className={`flex items-center p-2 rounded-lg dark:hover:bg-gray-700 group
             ${
               isActive

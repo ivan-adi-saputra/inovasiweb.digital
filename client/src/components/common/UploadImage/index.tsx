@@ -1,5 +1,6 @@
 "use client";
 
+import { config } from "@/config";
 import { useUploadImageMutation } from "@/services/image";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -7,9 +8,14 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 interface UploadImageProps {
   form: any;
   name: string;
+  defaultImage?: string;
 }
 
-export default function UploadImage({ form, name }: UploadImageProps) {
+export default function UploadImage({
+  form,
+  name,
+  defaultImage,
+}: UploadImageProps) {
   const [previewImg, setPreviewImg] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +41,15 @@ export default function UploadImage({ form, name }: UploadImageProps) {
   const handleUploadFile = () => {
     inputRef.current?.click();
   };
+
+  useEffect(() => {
+    if (defaultImage) {
+      const imageId = form.getValues("image");
+
+      setPreviewImg(`${config.base_url}/${defaultImage}`);
+      form.setValue(name, imageId);
+    }
+  }, [defaultImage]);
 
   return (
     <div className="w-full max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
