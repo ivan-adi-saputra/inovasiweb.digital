@@ -4,6 +4,8 @@ import { companyApi } from "./company";
 import { imageApi } from "./image";
 import { serviceApi } from "./service";
 import { projectApi } from "./project";
+import authReducer from "./authSlice";
+import { authApi } from "./auth";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +13,8 @@ export const store = configureStore({
     [imageApi.reducerPath]: imageApi.reducer,
     [serviceApi.reducerPath]: serviceApi.reducer,
     [projectApi.reducerPath]: projectApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+    auth: authReducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -18,8 +22,12 @@ export const store = configureStore({
       companyApi.middleware,
       imageApi.middleware,
       serviceApi.middleware,
-      projectApi.middleware
+      projectApi.middleware,
+      authApi.middleware
     ),
 });
 
 setupListeners(store.dispatch);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

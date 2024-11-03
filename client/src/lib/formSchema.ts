@@ -32,3 +32,8 @@ export const projectSchema = z.object({
     .min(1, { message: "Features minimal 1" }),
   description: z.string().optional().nullable(),
 });
+
+export const signInForm = z.object({
+  email: z.string({ required_error: "Email harus diisi" }),
+  password: z.string({ required_error: "Password harus diisi" }),
+});
